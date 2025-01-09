@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -10,17 +11,29 @@ export class SignupComponent {
 
   form: any = {
     data: {},
-    message: ''
+    message: '',
+    inputerror: {}
+  }
+
+  constructor(private httpClient: HttpClient) {
+
   }
 
   signUp() {
-    console.log('form: ', this.form);
-    console.log('form.data: ', this.form.data);
-    console.log('firstName: ', this.form.data.firstName);
-    console.log('lastName: ', this.form.data.lastName);
-    console.log('loginId: ', this.form.data.loginId);
-    console.log('password: ', this.form.data.password);
-    console.log('dob: ', this.form.data.dob);
+    this.httpClient.post('http://localhost:8080/Auth/signUp', this.form.data).subscribe((res: any) => {
+      console.log('res: ', res);
+
+      this.form.message = '';
+      this.form.inputerror = {};
+
+      if (res.result.message) {
+        this.form.message = res.result.message;
+      }
+
+      if (!res.success) {
+        this.form.inputerror = res.result.inputerror;
+      }
+    })
   }
 
 }
