@@ -9,6 +9,7 @@ import { SignupComponent } from './signup/signup.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './navbar/navbar.component';
 import { UserComponent } from './user/user.component';
+import { UserListComponent } from './user/user-list.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { UserComponent } from './user/user.component';
     SignupComponent,
     NavbarComponent,
     UserComponent,
+    UserListComponent,
   ],
   imports: [
     BrowserModule,
