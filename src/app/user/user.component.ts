@@ -16,10 +16,20 @@ export class UserComponent implements OnInit {
     preload: []
   }
 
-  constructor(private httpClient: HttpClient) {}
+  fileToUpload: any = null;
+
+  constructor(private httpClient: HttpClient, private route: ActivatedRoute) {
+    this.route.params.subscribe((params: any) => {
+      this.form.data.id = params["id"];
+      console.log("id => ", this.form.data.id)
+    })
+  }
 
   ngOnInit(): void {
     this.preload();
+    if (this.form.data.id && this.form.data.id > 0) {
+      this.display();
+    }
   }
 
 
@@ -28,6 +38,18 @@ export class UserComponent implements OnInit {
       console.log(res)
       this.form.preload = res.result.roleList;
     });
+  }
+
+  display() {
+    this.httpClient.get('http://localhost:8080/User/get/' + this.form.data.id).subscribe((res: any) => {
+      console.log(res)
+      this.form.data = res.result.data;
+    });
+  }
+
+  onFileSelect(event: any) {
+    this.fileToUpload = event.target.files.item(0);
+    console.log(this.fileToUpload);
   }
 
   save() {
@@ -44,7 +66,19 @@ export class UserComponent implements OnInit {
       if (!res.success) {
         this.form.inputerror = res.result.inputerror;
       }
+      this.form.data.id = res.result.data;
+
+      this.myFile();
     });
   }
 
+  myFile() {
+    const formData = new FormData();
+    formData.append('file', this.fileToUpload);
+    return this.httpClient.post("http://localhost:8080/User/profilePic/" + this.form.data.id, formData).subscribe((res: any) => {
+      console.log(this.fileToUpload);
+    }, error => {
+      console.log(error);
+    });
+  }
 }

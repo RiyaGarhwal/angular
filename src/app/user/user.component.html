@@ -54,6 +54,19 @@
             <font color="red"> {{form.inputerror.dob}}</font>
         </td>
     </tr>
+</table>
+<table style="padding-left: 38.7%;">
+    <tr>
+        <th></th>
+        <td> <img src="http://localhost:8080/User/profilePic/{{form.data.id}}" height="55px" width="80px"></td>
+    </tr>
+    <tr>
+        <th>Image :</th>
+        <td style="padding-left: 11%;"><input type="file" name="imageId" (change)="onFileSelect($event)"
+                accept="image/*">
+        </td>
+    </tr>
+    <tr></tr>
     <tr>
         <th></th>
         <td style="padding-left: 11%;"><button (click)="save()">save</button> &nbsp;
